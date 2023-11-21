@@ -7,6 +7,9 @@
 <html>
 <head>
 	<title>Barbearia</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 </head>
 <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
 <style type="text/css">
@@ -136,5 +139,34 @@
 			</form>
 		</div>
 	</section>
+	<script>
+    $(document).ready(function () {
+        $('form').submit(function (event) {
+            event.preventDefault();
+
+            var nome = $('input[name="nome"]').val();
+            var dataHora = $('#data_hora').val();
+
+            var formattedDateTime = moment(dataHora).format('YYYY-MM-DD HH:mm:ss');
+
+            $.ajax({
+                type: 'POST',
+                url: 'index.php',
+                data: {
+                    acao: 'inserir',
+                    nome: nome,
+                    data_hora: formattedDateTime
+                },
+                success: function (response) {
+                    console.log(response);
+                    alert('Seu horário foi agendado com sucesso!');
+                },
+                error: function (error) {
+                    console.error('Erro ao enviar o formulário:', error);
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>
